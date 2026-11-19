@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Java 集合操作快查表</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --surface: #ffffff;
+      --ink: #1d2939;
+      --muted: #667085;
+      --line: #dfe4ea;
+      --blue: #1769aa;
+      --blue-soft: #eaf4ff;
+      --green: #177245;
+      --code: #17212b;
+      --shadow: 0 8px 24px rgba(16, 24, 40, .07);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font: 15px/1.65 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Microsoft YaHei", sans-serif;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, .94);
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar-inner, main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      min-height: 64px;
+    }
+
+    .brand {
+      margin: 0;
+      font-size: 20px;
+      white-space: nowrap;
+    }
+
+    .search {
+      width: min(420px, 100%);
+      margin-left: auto;
+      padding: 10px 13px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      outline: none;
+      color: var(--ink);
+      background: var(--surface);
+      font: inherit;
+    }
+
+    .search:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px var(--blue-soft);
+    }
+
+    main { padding: 34px 0 60px; }
+
+    .intro {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+
+    h1, h2, h3 { line-height: 1.25; }
+    h1 { margin: 0 0 10px; font-size: clamp(28px, 4vw, 42px); }
+    h2 { margin: 0; font-size: 23px; }
+    h3 { margin: 0 0 10px; font-size: 18px; }
+    p { margin: 0; color: var(--muted); }
+
+    .tip {
+      padding: 16px 18px;
+      border-left: 4px solid var(--blue);
+      background: var(--blue-soft);
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 22px 0 28px;
+    }
+
+    nav button {
+      cursor: pointer;
+      padding: 7px 11px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--blue);
+      background: var(--surface);
+      font: inherit;
+    }
+
+    nav button:hover,
+    nav button.active {
+      border-color: var(--blue);
+      color: #fff;
+      background: var(--blue);
+    }
+
+    .section {
+      scroll-margin-top: 88px;
+      margin: 24px 0;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: baseline;
+      margin-bottom: 16px;
+    }
+
+    .tag {
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 560px;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      background: #f8fafc;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: #9b2c2c;
+      background: #fff1f1;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: .92em;
+    }
+
+    pre {
+      position: relative;
+      overflow-x: auto;
+      margin: 14px 0 0;
+      padding: 16px;
+      border-radius: 7px;
+      border: 1px solid var(--line);
+      color: #243447;
+      background: #f5f7fa;
+      font: 13px/1.65 "Cascadia Code", Consolas, monospace;
+    }
+
+    pre code {
+      padding: 0;
+      color: inherit;
+      background: transparent;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fcfdff;
+    }
+
+    .shortcut {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 8px 16px;
+      margin: 0;
+    }
+
+    .shortcut dt { color: var(--muted); }
+    .shortcut dd { margin: 0; font-weight: 600; }
+
+    .hidden { display: none; }
+    .search-empty { display: none; }
+
+    footer {
+      padding-top: 18px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    @media (max-width: 760px) {
+      .topbar-inner { align-items: stretch; flex-direction: column; padding: 12px 0; }
+      .search { width: 100%; margin-left: 0; }
+      .intro, .grid { grid-template-columns: 1fr; }
+      .section { padding: 17px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <strong class="brand">Java 集合操作快查表</strong>
+      <input id="search" class="search" type="search" placeholder="搜索：List、push、计数、堆……" aria-label="搜索内容">
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div>
+        <h1>Java Collections Cheat Sheet</h1>
+        <p>面向算法刷题的 List、Deque、Set、Map 与 PriorityQueue 快速参考。</p>
+      </div>
+      <div class="tip">
+        <strong>选择口诀：</strong><br>
+        下标访问用 <code>ArrayList</code>，去重用 <code>HashSet</code>，计数用
+        <code>HashMap</code>，最值用 <code>PriorityQueue</code>。
+      </div>
+    </section>
+
+    <nav aria-label="章节导航" id="tabs">
+      <button type="button" class="active" data-tab="overview">总览</button>
+      <button type="button" data-tab="list">List</button>
+      <button type="button" data-tab="deque">Deque</button>
+      <button type="button" data-tab="heap">PriorityQueue</button>
+      <button type="button" data-tab="set">Set</button>
+      <button type="button" data-tab="treeset">TreeSet</button>
+      <button type="button" data-tab="map">Map</button>
+      <button type="button" data-tab="complexity">复杂度</button>
+      <button type="button" data-tab="tips">高频提醒</button>
+    </nav>
+
+    <section id="overview" class="section searchable tab-panel" data-panel="overview">
+      <div class="section-head"><h2>快速选择</h2><span class="tag">点击上方标签直接切换</span></div>
+      <div class="grid">
+        <div class="card"><h3>线性容器</h3><p><code>List</code> 适合有序数据，<code>Deque</code> 既能当栈，也能通过队列写法完成 BFS。</p></div>
+        <div class="card"><h3>查找与统计</h3><p><code>Set</code> 用于去重，<code>Map</code> 用于计数和映射，<code>PriorityQueue</code> 用于持续取最值。</p></div>
+      </div>
+      <pre><code>// 刷题常用初始化
+List&lt;Integer&gt; list = new ArrayList&lt;&gt;();
+Set&lt;Integer&gt; set = new HashSet&lt;&gt;();
+Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+Deque&lt;Integer&gt; deque = new ArrayDeque&lt;&gt;();
+PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;&gt;();</code></pre>
+    </section>
+
+    <section id="list" class="section searchable tab-panel hidden" data-panel="list">
+      <div class="section-head"><h2>1. List</h2><span class="tag">有序、可重复、支持下标</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>操作</th><th>写法</th></tr></thead>
+          <tbody>
+            <tr><td>添加</td><td><code>add(x)</code></td></tr>
+            <tr><td>指定位置添加</td><td><code>add(i, x)</code></td></tr>
+            <tr><td>获取 / 修改</td><td><code>get(i)</code> / <code>set(i, x)</code></td></tr>
+            <tr><td>删除</td><td><code>remove(i)</code>（下标）或 <code>remove(Integer.valueOf(x))</code>（对象）</td></tr>
+            <tr><td>查询</td><td><code>size()</code>、<code>isEmpty()</code>、<code>contains(x)</code>、<code>indexOf(x)</code></td></tr>
+            <tr><td>排序 / 反转</td><td><code>sort(Integer::compareTo)</code>、<code>Collections.reverse(list)</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <pre><code>List&lt;Integer&gt; list = new ArrayList&lt;&gt;(Arrays.asList(3, 1, 2));
+list.add(4);
+list.remove(Integer.valueOf(1));
+list.sort((a, b) -&gt; b - a); // 降序</code></pre>
+    </section>
+
+    <section id="deque" class="section searchable tab-panel hidden" data-panel="deque">
+      <div class="section-head"><h2>2. Deque</h2><span class="tag">双端队列，包含队列功能</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>操作</th><th>头部写法</th><th>尾部写法</th></tr></thead>
+          <tbody>
+            <tr><td>添加</td><td><code>addFirst(x)</code></td><td><code>addLast(x)</code></td></tr>
+            <tr><td>删除</td><td><code>removeFirst()</code></td><td><code>removeLast()</code></td></tr>
+            <tr><td>查看</td><td><code>peekFirst()</code></td><td><code>peekLast()</code></td></tr>
+            <tr><td>刷题别名</td><td><code>push(x)</code> / <code>pop()</code></td><td><code>offer(x)</code> / <code>poll()</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <pre><code>Deque&lt;Integer&gt; deque = new ArrayDeque&lt;&gt;();
+deque.addFirst(1);     // 头部添加
+deque.addLast(2);      // 尾部添加
+deque.removeFirst();   // 头部删除
+deque.removeLast();    // 尾部删除
+deque.peekFirst();
+deque.peekLast();</code></pre>
+    </section>
+
+    <section id="set" class="section searchable tab-panel hidden" data-panel="set">
+      <div class="section-head"><h2>3. Set</h2><span class="tag">元素去重，基础操作</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>操作</th><th>写法</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>添加</td><td><code>add(x)</code></td><td>重复元素不会重复添加</td></tr>
+            <tr><td>删除</td><td><code>remove(x)</code></td><td>删除指定元素</td></tr>
+            <tr><td>判断包含</td><td><code>contains(x)</code></td><td>判断集合中是否存在元素</td></tr>
+            <tr><td>元素个数</td><td><code>size()</code></td><td>返回集合大小</td></tr>
+            <tr><td>判空</td><td><code>isEmpty()</code></td><td>判断集合是否为空</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top: 16px;"><strong>常见实现：</strong> <code>HashSet</code> 无序、平均 O(1)；<code>LinkedHashSet</code> 保持插入顺序；<code>TreeSet</code> 自动排序、O(log n)。</p>
+      <pre><code>Set&lt;Integer&gt; set = new HashSet&lt;&gt;();
+set.add(1);
+set.contains(1);
+set.remove(1);</code></pre>
+    </section>
+
+    <section id="treeset" class="section searchable tab-panel hidden" data-panel="treeset">
+      <div class="section-head"><h2>4. TreeSet</h2><span class="tag">自动排序，包含 Set 基础操作</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>操作</th><th>写法</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>添加</td><td><code>add(x)</code></td><td>添加元素并自动维护顺序</td></tr>
+            <tr><td>删除</td><td><code>remove(x)</code></td><td>删除指定元素</td></tr>
+            <tr><td>判断包含</td><td><code>contains(x)</code></td><td>判断集合中是否存在元素</td></tr>
+            <tr><td>元素个数</td><td><code>size()</code></td><td>返回集合大小</td></tr>
+            <tr><td>判空</td><td><code>isEmpty()</code></td><td>判断集合是否为空</td></tr>
+            <tr><td>最小 / 最大值</td><td><code>first()</code> / <code>last()</code></td><td>获取最小或最大元素</td></tr>
+            <tr><td>小于 / 小于等于</td><td><code>lower(x)</code> / <code>floor(x)</code></td><td>获取 x 左侧的最近元素</td></tr>
+            <tr><td>大于 / 大于等于</td><td><code>higher(x)</code> / <code>ceiling(x)</code></td><td>获取 x 右侧的最近元素</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <pre><code>TreeSet&lt;Integer&gt; treeSet = new TreeSet&lt;&gt;();
+treeSet.add(3);
+treeSet.add(1);
+treeSet.add(2);
+treeSet.first();   // 1
+treeSet.last();    // 3</code></pre>
+    </section>
+
+    <section id="map" class="section searchable tab-panel hidden" data-panel="map">
+      <div class="section-head"><h2>5. Map</h2><span class="tag">键值对、统计、映射</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>操作</th><th>写法</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>添加 / 覆盖</td><td><code>put(key, value)</code></td><td>key 已存在时覆盖 value</td></tr>
+            <tr><td>获取</td><td><code>get(key)</code></td><td>key 不存在时返回 null</td></tr>
+            <tr><td>默认获取</td><td><code>getOrDefault(key, defaultValue)</code></td><td>不存在时返回默认值</td></tr>
+            <tr><td>判断 key</td><td><code>containsKey(key)</code></td><td>判断是否包含 key</td></tr>
+            <tr><td>删除</td><td><code>remove(key)</code></td><td>删除指定键值对</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top: 16px;"><strong>常见实现：</strong> <code>HashMap</code> 无序、平均 O(1)；<code>LinkedHashMap</code> 保持插入顺序；<code>TreeMap</code> 按 key 排序、O(log n)。</p>
+      <pre><code>Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;();
+map.put("a", 1);
+map.get("a");
+map.getOrDefault("b", 0);
+map.containsKey("a");
+map.remove("a");
+
+for (Map.Entry&lt;String, Integer&gt; entry : map.entrySet()) {
+    String key = entry.getKey();
+    int value = entry.getValue();
+}</code></pre>
+      <div class="grid">
+        <div class="card">
+          <h3>频率统计</h3>
+          <pre><code>for (int x : nums) {
+    count.put(x, count.getOrDefault(x, 0) + 1);
+}</code></pre>
+        </div>
+        <div class="card">
+          <h3>分组</h3>
+          <pre><code>groups.computeIfAbsent(
+    key, k -&gt; new ArrayList&lt;&gt;()
+).add(value);</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="heap" class="section searchable tab-panel hidden" data-panel="heap">
+      <div class="section-head"><h2>6. PriorityQueue</h2><span class="tag">优先队列 / 堆</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>操作</th><th>写法</th><th>复杂度</th></tr></thead>
+          <tbody>
+            <tr><td>入堆</td><td><code>offer(x)</code></td><td>O(log n)</td></tr>
+            <tr><td>查看堆顶</td><td><code>peek()</code></td><td>O(1)</td></tr>
+            <tr><td>删除堆顶</td><td><code>poll()</code></td><td>O(log n)</td></tr>
+            <tr><td>判空</td><td><code>isEmpty()</code></td><td>O(1)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <pre><code>// 小根堆：默认
+PriorityQueue&lt;Integer&gt; minHeap = new PriorityQueue&lt;&gt;();
+
+// 大根堆
+PriorityQueue&lt;Integer&gt; maxHeap =
+    new PriorityQueue&lt;&gt;(Collections.reverseOrder());
+
+minHeap.offer(3);
+minHeap.peek(); // 查看最小值
+minHeap.poll(); // 删除最小值</code></pre>
+    </section>
+
+    <section id="complexity" class="section searchable tab-panel hidden" data-panel="complexity">
+      <div class="section-head"><h2>7. 常见复杂度</h2><span class="tag">平均复杂度</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>集合</th><th>查询</th><th>添加</th><th>删除</th></tr></thead>
+          <tbody>
+            <tr><td><code>ArrayList</code> 按下标</td><td>O(1)</td><td>尾部均摊 O(1)</td><td>中间 O(n)</td></tr>
+            <tr><td><code>HashSet</code></td><td>O(1)</td><td>O(1)</td><td>O(1)</td></tr>
+            <tr><td><code>TreeSet</code></td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td></tr>
+            <tr><td><code>HashMap</code></td><td>O(1)</td><td>O(1)</td><td>O(1)</td></tr>
+            <tr><td><code>TreeMap</code></td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td></tr>
+            <tr><td><code>PriorityQueue</code></td><td>堆顶 O(1)</td><td>O(log n)</td><td>O(log n)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tips" class="section searchable tab-panel hidden" data-panel="tips">
+      <div class="section-head"><h2>8. 高频提醒</h2><span class="tag">刷题避坑</span></div>
+      <dl class="shortcut">
+        <dt>需要下标访问</dt><dd><code>ArrayList</code></dd>
+        <dt>需要去重</dt><dd><code>HashSet</code></dd>
+        <dt>需要统计频率</dt><dd><code>HashMap</code></dd>
+        <dt>需要先进先出</dt><dd><code>Deque / ArrayDeque</code></dd>
+        <dt>需要后进先出</dt><dd><code>Deque</code></dd>
+        <dt>需要自动排序</dt><dd><code>TreeSet / TreeMap</code></dd>
+        <dt>需要不断取最值</dt><dd><code>PriorityQueue</code></dd>
+      </dl>
+      <pre><code>list.remove(1);                  // 删除下标 1
+list.remove(Integer.valueOf(1));   // 删除元素 1</code></pre>
+    </section>
+
+    <footer>Java 8+ 常用写法 · 面向算法刷题整理</footer>
+  </main>
+
+  <script>
+    const input = document.querySelector("#search");
+    const tabs = [...document.querySelectorAll("#tabs button")];
+    const panels = [...document.querySelectorAll(".tab-panel")];
+
+    function switchTab(tabName) {
+      tabs.forEach(tab => {
+        const isActive = tab.dataset.tab === tabName;
+        tab.classList.toggle("active", isActive);
+        tab.setAttribute("aria-selected", isActive);
+      });
+      panels.forEach(panel => {
+        panel.classList.toggle("hidden", panel.dataset.panel !== tabName);
+      });
+      input.value = "";
+      input.dispatchEvent(new Event("input"));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => switchTab(tab.dataset.tab));
+    });
+
+    input.addEventListener("input", () => {
+      const keyword = input.value.trim().toLowerCase();
+      const activePanel = panels.find(panel => !panel.classList.contains("hidden"));
+      if (!activePanel) return;
+      activePanel.classList.toggle(
+        "search-empty",
+        Boolean(keyword) && !activePanel.textContent.toLowerCase().includes(keyword)
+      );
+    });
+
+    tabs.forEach(tab => {
+      tab.setAttribute("aria-selected", tab.classList.contains("active"));
+    });
+  </script>
+</body>
+</html>
