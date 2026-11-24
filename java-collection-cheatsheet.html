@@ -246,7 +246,7 @@
     <section class="intro">
       <div>
         <h1>Java Collections Cheat Sheet</h1>
-        <p>面向算法刷题的 List、Deque、Set、Map 与 PriorityQueue 快速参考。</p>
+        <p>面向算法刷题的 String、Arrays、Stream、List、Deque、Set、Map 与 PriorityQueue 快速参考。</p>
       </div>
       <div class="tip">
         <strong>选择口诀：</strong><br>
@@ -258,6 +258,9 @@
     <nav aria-label="章节导航" id="tabs">
       <button type="button" class="active" data-tab="overview">总览</button>
       <button type="button" data-tab="list">List</button>
+      <button type="button" data-tab="string">String</button>
+      <button type="button" data-tab="arrays">Arrays</button>
+      <button type="button" data-tab="stream">Stream</button>
       <button type="button" data-tab="deque">Deque</button>
       <button type="button" data-tab="heap">PriorityQueue</button>
       <button type="button" data-tab="set">Set</button>
@@ -270,10 +273,12 @@
     <section id="overview" class="section searchable tab-panel" data-panel="overview">
       <div class="section-head"><h2>快速选择</h2><span class="tag">点击上方标签直接切换</span></div>
       <div class="grid">
-        <div class="card"><h3>线性容器</h3><p><code>List</code> 适合有序数据，<code>Deque</code> 既能当栈，也能通过队列写法完成 BFS。</p></div>
+        <div class="card"><h3>字符串、数组与集合</h3><p><code>String</code> 处理文本，<code>Arrays</code> 操作数组，<code>Stream</code> 链式处理数据，<code>List</code> 适合有序数据。</p></div>
         <div class="card"><h3>查找与统计</h3><p><code>Set</code> 用于去重，<code>Map</code> 用于计数和映射，<code>PriorityQueue</code> 用于持续取最值。</p></div>
       </div>
       <pre><code>// 刷题常用初始化
+String str = "abc";
+int[] nums = {3, 1, 2};
 List&lt;Integer&gt; list = new ArrayList&lt;&gt;();
 Set&lt;Integer&gt; set = new HashSet&lt;&gt;();
 Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
@@ -289,10 +294,16 @@ PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;&gt;();</code></pre>
           <tbody>
             <tr><td>添加</td><td><code>add(x)</code></td></tr>
             <tr><td>指定位置添加</td><td><code>add(i, x)</code></td></tr>
-            <tr><td>获取 / 修改</td><td><code>get(i)</code> / <code>set(i, x)</code></td></tr>
-            <tr><td>删除</td><td><code>remove(i)</code>（下标）或 <code>remove(Integer.valueOf(x))</code>（对象）</td></tr>
-            <tr><td>查询</td><td><code>size()</code>、<code>isEmpty()</code>、<code>contains(x)</code>、<code>indexOf(x)</code></td></tr>
-            <tr><td>排序 / 反转</td><td><code>sort(Integer::compareTo)</code>、<code>Collections.reverse(list)</code></td></tr>
+            <tr><td>获取</td><td><code>get(i)</code></td></tr>
+            <tr><td>修改</td><td><code>set(i, x)</code></td></tr>
+            <tr><td>按下标删除</td><td><code>remove(i)</code></td></tr>
+            <tr><td>按元素删除</td><td><code>remove(Integer.valueOf(x))</code></td></tr>
+            <tr><td>获取长度</td><td><code>size()</code></td></tr>
+            <tr><td>判断为空</td><td><code>isEmpty()</code></td></tr>
+            <tr><td>判断包含</td><td><code>contains(x)</code></td></tr>
+            <tr><td>查找下标</td><td><code>indexOf(x)</code></td></tr>
+            <tr><td>排序</td><td><code>sort(Integer::compareTo)</code></td></tr>
+            <tr><td>反转</td><td><code>Collections.reverse(...)</code></td></tr>
           </tbody>
         </table>
       </div>
@@ -302,8 +313,138 @@ list.remove(Integer.valueOf(1));
 list.sort((a, b) -&gt; b - a); // 降序</code></pre>
     </section>
 
+    <section id="string" class="section searchable tab-panel hidden" data-panel="string">
+      <div class="section-head"><h2>2. String</h2><span class="tag">字符串处理，刷题高频</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>操作</th><th>写法</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>创建</td><td><code>"abc"</code></td><td>字符串字面量</td></tr>
+            <tr><td>由字符数组创建</td><td><code>new String(chars)</code></td><td>将 <code>char[]</code> 转为 String</td></tr>
+            <tr><td>获取长度</td><td><code>length()</code></td><td>返回字符数量</td></tr>
+            <tr><td>获取字符</td><td><code>charAt(i)</code></td><td>获取下标 i 处的字符</td></tr>
+            <tr><td>比较内容</td><td><code>equals(str)</code></td><td>不要使用 <code>==</code> 比较字符串内容</td></tr>
+            <tr><td>忽略大小写比较</td><td><code>equalsIgnoreCase(str)</code></td><td>忽略大小写判断相等</td></tr>
+            <tr><td>判断前缀</td><td><code>startsWith(prefix)</code></td><td>判断是否以指定字符串开头</td></tr>
+            <tr><td>判断后缀</td><td><code>endsWith(suffix)</code></td><td>判断是否以指定字符串结尾</td></tr>
+            <tr><td>查找字符</td><td><code>indexOf(ch)</code></td><td>找不到时返回 -1</td></tr>
+            <tr><td>查找字符串</td><td><code>indexOf(sub)</code></td><td>查找子串第一次出现的位置</td></tr>
+            <tr><td>截取</td><td><code>substring(begin, end)</code></td><td>左闭右开，end 不包含</td></tr>
+            <tr><td>删除首尾空白</td><td><code>trim()</code></td><td>去掉首尾空白字符</td></tr>
+            <tr><td>替换字符</td><td><code>replace(old, new)</code></td><td>替换所有匹配内容</td></tr>
+            <tr><td>正则替换</td><td><code>replaceAll(regex, replacement)</code></td><td>按正则表达式替换</td></tr>
+            <tr><td>拆分</td><td><code>split(delimiter)</code></td><td>返回 <code>String[]</code></td></tr>
+            <tr><td>拼接</td><td><code>concat(str)</code></td><td>返回拼接后的新字符串</td></tr>
+            <tr><td>转字符数组</td><td><code>toCharArray()</code></td><td>返回 <code>char[]</code></td></tr>
+            <tr><td>转小写</td><td><code>toLowerCase()</code></td><td>返回新的小写字符串</td></tr>
+            <tr><td>转大写</td><td><code>toUpperCase()</code></td><td>返回新的大写字符串</td></tr>
+            <tr><td>字符串转整数</td><td><code>Integer.parseInt(str)</code></td><td>例如 <code>"123"</code> 转为 <code>123</code></td></tr>
+            <tr><td>整数转字符串</td><td><code>String.valueOf(x)</code></td><td>适用于数字、字符等类型</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <pre><code>char[] chars = {'a', 'b', 'c'};
+String str = new String(chars); // char[] 初始化 String
+String[] parts = str.split(",");</code></pre>
+    </section>
+
+    <section id="arrays" class="section searchable tab-panel hidden" data-panel="arrays">
+      <div class="section-head"><h2>3. Arrays</h2><span class="tag">数组工具类，适用于基本类型数组和对象数组</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>操作</th><th>写法</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>获取长度</td><td><code>array.length</code></td><td>数组长度，注意不是 <code>length()</code></td></tr>
+            <tr><td>转 List</td><td><code>Arrays.asList(array)</code></td><td>适用于 <code>String[]</code>、<code>Integer[]</code> 等对象数组；返回的 List 长度不可改变</td></tr>
+            <tr><td>排序</td><td><code>Arrays.sort(array)</code></td><td>升序排序，支持 <code>int[]</code>、<code>char[]</code>、<code>String[]</code> 等</td></tr>
+            <tr><td>指定区间排序</td><td><code>Arrays.sort(array, from, to)</code></td><td>排序范围为左闭右开</td></tr>
+            <tr><td>二分查找</td><td><code>Arrays.binarySearch(array, x)</code></td><td>数组必须先排好序</td></tr>
+            <tr><td>填充</td><td><code>Arrays.fill(array, x)</code></td><td>将所有元素填为 x</td></tr>
+            <tr><td>区间填充</td><td><code>Arrays.fill(array, from, to, x)</code></td><td>填充左闭右开区间</td></tr>
+            <tr><td>复制</td><td><code>Arrays.copyOf(array, newLength)</code></td><td>复制并设置新长度</td></tr>
+            <tr><td>区间复制</td><td><code>Arrays.copyOfRange(array, from, to)</code></td><td>复制左闭右开区间</td></tr>
+            <tr><td>判断相等</td><td><code>Arrays.equals(a, b)</code></td><td>逐个比较一维数组元素</td></tr>
+            <tr><td>转字符串</td><td><code>Arrays.toString(array)</code></td><td>方便打印一维数组</td></tr>
+            <tr><td>二维数组转字符串</td><td><code>Arrays.deepToString(array)</code></td><td>打印嵌套数组</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <h3>字符串排序规范化</h3>
+          <pre><code>char[] chars = s.toCharArray();
+Arrays.sort(chars);
+String key = new String(chars);</code></pre>
+        </div>
+        <div class="card">
+          <h3>刷题常用初始化</h3>
+          <pre><code>int[] nums = {3, 1, 2};
+Arrays.sort(nums);       // [1, 2, 3]
+Arrays.fill(nums, 0);    // [0, 0, 0]
+
+String[] words = {"a", "b"};
+List&lt;String&gt; list = Arrays.asList(words);</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="stream" class="section searchable tab-panel hidden" data-panel="stream">
+      <div class="section-head"><h2>4. Stream</h2><span class="tag">链式处理集合和数组数据</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>操作</th><th>写法</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>创建集合流</td><td><code>stream()</code></td><td>从集合创建 Stream</td></tr>
+            <tr><td>创建并行流</td><td><code>parallelStream()</code></td><td>创建并行 Stream，刷题中通常不需要</td></tr>
+            <tr><td>数组转流</td><td><code>Arrays.stream(array)</code></td><td>适用于基本类型数组和对象数组</td></tr>
+            <tr><td>筛选</td><td><code>filter(predicate)</code></td><td>保留满足条件的元素</td></tr>
+            <tr><td>转换</td><td><code>map(function)</code></td><td>将每个元素转换成另一种结果</td></tr>
+            <tr><td>扁平转换</td><td><code>flatMap(function)</code></td><td>将多个流合并成一个流</td></tr>
+            <tr><td>去重</td><td><code>distinct()</code></td><td>去除重复元素</td></tr>
+            <tr><td>排序</td><td><code>sorted()</code></td><td>自然升序排序</td></tr>
+            <tr><td>自定义排序</td><td><code>sorted(comparator)</code></td><td>按比较器排序</td></tr>
+            <tr><td>跳过</td><td><code>skip(n)</code></td><td>跳过前 n 个元素</td></tr>
+            <tr><td>限制数量</td><td><code>limit(n)</code></td><td>只保留前 n 个元素</td></tr>
+            <tr><td>遍历</td><td><code>forEach(action)</code></td><td>对每个元素执行操作</td></tr>
+            <tr><td>转 List</td><td><code>collect(Collectors.toList())</code></td><td>收集为 List</td></tr>
+            <tr><td>转 Set</td><td><code>collect(Collectors.toSet())</code></td><td>收集为 Set 并去重</td></tr>
+            <tr><td>转数组</td><td><code>toArray()</code></td><td>转为 Object[]</td></tr>
+            <tr><td>计数</td><td><code>count()</code></td><td>返回元素数量</td></tr>
+            <tr><td>求和</td><td><code>mapToInt(x -&gt; x).sum()</code></td><td>整型流求和</td></tr>
+            <tr><td>最大值</td><td><code>max(comparator)</code></td><td>返回 Optional</td></tr>
+            <tr><td>最小值</td><td><code>min(comparator)</code></td><td>返回 Optional</td></tr>
+            <tr><td>全部满足</td><td><code>allMatch(predicate)</code></td><td>所有元素满足条件</td></tr>
+            <tr><td>任意满足</td><td><code>anyMatch(predicate)</code></td><td>至少一个元素满足条件</td></tr>
+            <tr><td>没有满足</td><td><code>noneMatch(predicate)</code></td><td>没有元素满足条件</td></tr>
+            <tr><td>查找任意元素</td><td><code>findAny()</code></td><td>返回 Optional</td></tr>
+            <tr><td>查找第一个</td><td><code>findFirst()</code></td><td>返回 Optional</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <h3>筛选、转换、收集</h3>
+          <pre><code>List&lt;Integer&gt; result = list.stream()
+    .filter(x -&gt; x % 2 == 0)
+    .map(x -&gt; x * 2)
+    .collect(Collectors.toList());</code></pre>
+        </div>
+        <div class="card">
+          <h3>数组转 Stream</h3>
+          <pre><code>int sum = Arrays.stream(nums)
+    .filter(x -&gt; x &gt; 0)
+    .sum();</code></pre>
+        </div>
+      </div>
+      <pre><code>long count = list.stream().count();
+boolean exists = list.stream().anyMatch(x -&gt; x == target);
+List&lt;Integer&gt; sorted = list.stream()
+    .sorted()
+    .collect(Collectors.toList());</code></pre>
+    </section>
+
     <section id="deque" class="section searchable tab-panel hidden" data-panel="deque">
-      <div class="section-head"><h2>2. Deque</h2><span class="tag">双端队列，包含队列功能</span></div>
+      <div class="section-head"><h2>5. Deque</h2><span class="tag">双端队列，包含队列功能</span></div>
       <div class="table-wrap">
         <table>
           <thead><tr><th>操作</th><th>头部写法</th><th>尾部写法</th></tr></thead>
@@ -325,7 +466,7 @@ deque.peekLast();</code></pre>
     </section>
 
     <section id="set" class="section searchable tab-panel hidden" data-panel="set">
-      <div class="section-head"><h2>3. Set</h2><span class="tag">元素去重，基础操作</span></div>
+      <div class="section-head"><h2>6. Set</h2><span class="tag">元素去重，基础操作</span></div>
       <div class="table-wrap">
         <table>
           <thead><tr><th>操作</th><th>写法</th><th>说明</th></tr></thead>
@@ -346,7 +487,7 @@ set.remove(1);</code></pre>
     </section>
 
     <section id="treeset" class="section searchable tab-panel hidden" data-panel="treeset">
-      <div class="section-head"><h2>4. TreeSet</h2><span class="tag">自动排序，包含 Set 基础操作</span></div>
+      <div class="section-head"><h2>7. TreeSet</h2><span class="tag">自动排序，包含 Set 基础操作</span></div>
       <div class="table-wrap">
         <table>
           <thead><tr><th>操作</th><th>写法</th><th>说明</th></tr></thead>
@@ -356,9 +497,12 @@ set.remove(1);</code></pre>
             <tr><td>判断包含</td><td><code>contains(x)</code></td><td>判断集合中是否存在元素</td></tr>
             <tr><td>元素个数</td><td><code>size()</code></td><td>返回集合大小</td></tr>
             <tr><td>判空</td><td><code>isEmpty()</code></td><td>判断集合是否为空</td></tr>
-            <tr><td>最小 / 最大值</td><td><code>first()</code> / <code>last()</code></td><td>获取最小或最大元素</td></tr>
-            <tr><td>小于 / 小于等于</td><td><code>lower(x)</code> / <code>floor(x)</code></td><td>获取 x 左侧的最近元素</td></tr>
-            <tr><td>大于 / 大于等于</td><td><code>higher(x)</code> / <code>ceiling(x)</code></td><td>获取 x 右侧的最近元素</td></tr>
+            <tr><td>最小值</td><td><code>first()</code></td><td>获取最小元素</td></tr>
+            <tr><td>最大值</td><td><code>last()</code></td><td>获取最大元素</td></tr>
+            <tr><td>小于</td><td><code>lower(x)</code></td><td>获取严格小于 x 的最大元素</td></tr>
+            <tr><td>小于等于</td><td><code>floor(x)</code></td><td>获取小于等于 x 的最大元素</td></tr>
+            <tr><td>大于</td><td><code>higher(x)</code></td><td>获取严格大于 x 的最小元素</td></tr>
+            <tr><td>大于等于</td><td><code>ceiling(x)</code></td><td>获取大于等于 x 的最小元素</td></tr>
           </tbody>
         </table>
       </div>
@@ -371,7 +515,7 @@ treeSet.last();    // 3</code></pre>
     </section>
 
     <section id="map" class="section searchable tab-panel hidden" data-panel="map">
-      <div class="section-head"><h2>5. Map</h2><span class="tag">键值对、统计、映射</span></div>
+      <div class="section-head"><h2>8. Map</h2><span class="tag">键值对、统计、映射</span></div>
       <div class="table-wrap">
         <table>
           <thead><tr><th>操作</th><th>写法</th><th>说明</th></tr></thead>
@@ -381,6 +525,8 @@ treeSet.last();    // 3</code></pre>
             <tr><td>默认获取</td><td><code>getOrDefault(key, defaultValue)</code></td><td>不存在时返回默认值</td></tr>
             <tr><td>判断 key</td><td><code>containsKey(key)</code></td><td>判断是否包含 key</td></tr>
             <tr><td>删除</td><td><code>remove(key)</code></td><td>删除指定键值对</td></tr>
+            <tr><td>获取所有 value</td><td><code>values()</code></td><td>返回所有 value 的集合视图</td></tr>
+            <tr><td>value 转 List</td><td><code>new ArrayList&lt;&gt;(values())</code></td><td>将所有 value 转为可修改的 List</td></tr>
           </tbody>
         </table>
       </div>
@@ -391,6 +537,7 @@ map.get("a");
 map.getOrDefault("b", 0);
 map.containsKey("a");
 map.remove("a");
+List&lt;Integer&gt; values = new ArrayList&lt;&gt;(map.values());
 
 for (Map.Entry&lt;String, Integer&gt; entry : map.entrySet()) {
     String key = entry.getKey();
@@ -409,11 +556,15 @@ for (Map.Entry&lt;String, Integer&gt; entry : map.entrySet()) {
     key, k -&gt; new ArrayList&lt;&gt;()
 ).add(value);</code></pre>
         </div>
+        <div class="card">
+          <h3>Map value 转 List</h3>
+          <pre><code>return new ArrayList&lt;&gt;(map.values());</code></pre>
+        </div>
       </div>
     </section>
 
     <section id="heap" class="section searchable tab-panel hidden" data-panel="heap">
-      <div class="section-head"><h2>6. PriorityQueue</h2><span class="tag">优先队列 / 堆</span></div>
+      <div class="section-head"><h2>9. PriorityQueue</h2><span class="tag">优先队列 / 堆</span></div>
       <div class="table-wrap">
         <table>
           <thead><tr><th>操作</th><th>写法</th><th>复杂度</th></tr></thead>
@@ -438,7 +589,7 @@ minHeap.poll(); // 删除最小值</code></pre>
     </section>
 
     <section id="complexity" class="section searchable tab-panel hidden" data-panel="complexity">
-      <div class="section-head"><h2>7. 常见复杂度</h2><span class="tag">平均复杂度</span></div>
+      <div class="section-head"><h2>10. 常见复杂度</h2><span class="tag">平均复杂度</span></div>
       <div class="table-wrap">
         <table>
           <thead><tr><th>集合</th><th>查询</th><th>添加</th><th>删除</th></tr></thead>
@@ -455,7 +606,7 @@ minHeap.poll(); // 删除最小值</code></pre>
     </section>
 
     <section id="tips" class="section searchable tab-panel hidden" data-panel="tips">
-      <div class="section-head"><h2>8. 高频提醒</h2><span class="tag">刷题避坑</span></div>
+      <div class="section-head"><h2>11. 高频提醒</h2><span class="tag">刷题避坑</span></div>
       <dl class="shortcut">
         <dt>需要下标访问</dt><dd><code>ArrayList</code></dd>
         <dt>需要去重</dt><dd><code>HashSet</code></dd>
@@ -465,8 +616,8 @@ minHeap.poll(); // 删除最小值</code></pre>
         <dt>需要自动排序</dt><dd><code>TreeSet / TreeMap</code></dd>
         <dt>需要不断取最值</dt><dd><code>PriorityQueue</code></dd>
       </dl>
-      <pre><code>list.remove(1);                  // 删除下标 1
-list.remove(Integer.valueOf(1));   // 删除元素 1</code></pre>
+      <pre><code>remove(1);                         // List 按下标删除
+remove(Integer.valueOf(1));      // List 按元素删除</code></pre>
     </section>
 
     <footer>Java 8+ 常用写法 · 面向算法刷题整理</footer>
