@@ -290,6 +290,17 @@ PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;&gt;();</code></pre>
       <div class="section-head"><h2>1. List</h2><span class="tag">有序、可重复、支持下标</span></div>
       <div class="table-wrap">
         <table>
+          <thead><tr><th>构造方式</th><th>写法</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>空 ArrayList</td><td><code>new ArrayList&lt;&gt;()</code></td><td>最常用的 List 实现</td></tr>
+            <tr><td>指定初始容量</td><td><code>new ArrayList&lt;&gt;(capacity)</code></td><td>减少扩容次数，不代表当前已有元素</td></tr>
+            <tr><td>由集合创建</td><td><code>new ArrayList&lt;&gt;(collection)</code></td><td>创建可增删的 ArrayList</td></tr>
+            <tr><td>空 LinkedList</td><td><code>new LinkedList&lt;&gt;()</code></td><td>也实现了 List 和 Deque</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
           <thead><tr><th>操作</th><th>写法</th></tr></thead>
           <tbody>
             <tr><td>添加</td><td><code>add(x)</code></td></tr>
@@ -447,35 +458,73 @@ List&lt;Integer&gt; sorted = list.stream()
       <div class="section-head"><h2>5. Deque</h2><span class="tag">双端队列，包含队列功能</span></div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>操作</th><th>头部写法</th><th>尾部写法</th></tr></thead>
+          <thead><tr><th>构造方式</th><th>写法</th><th>说明</th></tr></thead>
           <tbody>
-            <tr><td>添加</td><td><code>addFirst(x)</code></td><td><code>addLast(x)</code></td></tr>
-            <tr><td>删除</td><td><code>removeFirst()</code></td><td><code>removeLast()</code></td></tr>
-            <tr><td>查看</td><td><code>peekFirst()</code></td><td><code>peekLast()</code></td></tr>
-            <tr><td>刷题别名</td><td><code>push(x)</code> / <code>pop()</code></td><td><code>offer(x)</code> / <code>poll()</code></td></tr>
+            <tr><td>空 ArrayDeque</td><td><code>new ArrayDeque&lt;&gt;()</code></td><td>刷题最常用，不能存放 null</td></tr>
+            <tr><td>指定初始容量</td><td><code>new ArrayDeque&lt;&gt;(capacity)</code></td><td>指定初始容量</td></tr>
+            <tr><td>由集合创建</td><td><code>new ArrayDeque&lt;&gt;(collection)</code></td><td>将已有集合中的元素加入队列</td></tr>
+            <tr><td>LinkedList 实现</td><td><code>new LinkedList&lt;&gt;()</code></td><td>也能作为 Deque 使用</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>操作</th><th>写法</th><th>返回值</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>头部添加</td><td><code>addFirst(x)</code></td><td><code>void</code></td><td>失败时抛异常</td></tr>
+            <tr><td>尾部添加</td><td><code>addLast(x)</code></td><td><code>void</code></td><td>失败时抛异常</td></tr>
+            <tr><td>头部添加</td><td><code>offerFirst(x)</code></td><td><code>boolean</code></td><td>添加成功返回 true，失败返回 false</td></tr>
+            <tr><td>尾部添加</td><td><code>offerLast(x)</code></td><td><code>boolean</code></td><td>添加成功返回 true，失败返回 false</td></tr>
+            <tr><td>头部删除</td><td><code>removeFirst()</code></td><td><code>E</code></td><td>返回并删除头部元素；空队列抛异常</td></tr>
+            <tr><td>尾部删除</td><td><code>removeLast()</code></td><td><code>E</code></td><td>返回并删除尾部元素；空队列抛异常</td></tr>
+            <tr><td>头部删除</td><td><code>pollFirst()</code></td><td><code>E</code></td><td>返回并删除头部元素；空队列返回 null</td></tr>
+            <tr><td>尾部删除</td><td><code>pollLast()</code></td><td><code>E</code></td><td>返回并删除尾部元素；空队列返回 null</td></tr>
+            <tr><td>查看头部</td><td><code>getFirst()</code></td><td><code>E</code></td><td>只查看不删除；空队列抛异常</td></tr>
+            <tr><td>查看尾部</td><td><code>getLast()</code></td><td><code>E</code></td><td>只查看不删除；空队列抛异常</td></tr>
+            <tr><td>查看头部</td><td><code>peekFirst()</code></td><td><code>E</code></td><td>只查看不删除；空队列返回 null</td></tr>
+            <tr><td>查看尾部</td><td><code>peekLast()</code></td><td><code>E</code></td><td>只查看不删除；空队列返回 null</td></tr>
+            <tr><td>栈顶添加</td><td><code>push(x)</code></td><td><code>void</code></td><td>等价于 <code>addFirst(x)</code></td></tr>
+            <tr><td>栈顶删除</td><td><code>pop()</code></td><td><code>E</code></td><td>等价于 <code>removeFirst()</code></td></tr>
+            <tr><td>队尾添加</td><td><code>offer(x)</code></td><td><code>boolean</code></td><td>等价于 <code>offerLast(x)</code></td></tr>
+            <tr><td>队头删除</td><td><code>poll()</code></td><td><code>E</code></td><td>等价于 <code>pollFirst()</code>；空队列返回 null</td></tr>
+            <tr><td>查看队头</td><td><code>peek()</code></td><td><code>E</code></td><td>等价于 <code>peekFirst()</code>；空队列返回 null</td></tr>
+            <tr><td>判断为空</td><td><code>isEmpty()</code></td><td><code>boolean</code></td><td>为空返回 true，否则返回 false</td></tr>
+            <tr><td>获取元素个数</td><td><code>size()</code></td><td><code>int</code></td><td>返回当前元素数量</td></tr>
+            <tr><td>清空</td><td><code>clear()</code></td><td><code>void</code></td><td>删除所有元素</td></tr>
           </tbody>
         </table>
       </div>
       <pre><code>Deque&lt;Integer&gt; deque = new ArrayDeque&lt;&gt;();
-deque.addFirst(1);     // 头部添加
-deque.addLast(2);      // 尾部添加
-deque.removeFirst();   // 头部删除
-deque.removeLast();    // 尾部删除
-deque.peekFirst();
-deque.peekLast();</code></pre>
+boolean empty = deque.isEmpty(); // 判空
+deque.addFirst(1);               // void，头部添加
+deque.addLast(2);                // void，尾部添加
+Integer first = deque.removeFirst(); // 返回 E，删除头部
+Integer last = deque.peekLast();     // 返回 E，查看尾部
+Integer value = deque.poll();        // 返回 E，空队列返回 null</code></pre>
     </section>
 
     <section id="set" class="section searchable tab-panel hidden" data-panel="set">
       <div class="section-head"><h2>6. Set</h2><span class="tag">元素去重，基础操作</span></div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>操作</th><th>写法</th><th>说明</th></tr></thead>
+          <thead><tr><th>构造方式</th><th>写法</th><th>说明</th></tr></thead>
           <tbody>
-            <tr><td>添加</td><td><code>add(x)</code></td><td>重复元素不会重复添加</td></tr>
-            <tr><td>删除</td><td><code>remove(x)</code></td><td>删除指定元素</td></tr>
-            <tr><td>判断包含</td><td><code>contains(x)</code></td><td>判断集合中是否存在元素</td></tr>
-            <tr><td>元素个数</td><td><code>size()</code></td><td>返回集合大小</td></tr>
-            <tr><td>判空</td><td><code>isEmpty()</code></td><td>判断集合是否为空</td></tr>
+            <tr><td>空 HashSet</td><td><code>new HashSet&lt;&gt;()</code></td><td>无序，平均 O(1)</td></tr>
+            <tr><td>指定初始容量</td><td><code>new HashSet&lt;&gt;(capacity)</code></td><td>指定底层哈希表初始容量</td></tr>
+            <tr><td>由集合创建</td><td><code>new HashSet&lt;&gt;(collection)</code></td><td>创建并去重</td></tr>
+            <tr><td>保持插入顺序</td><td><code>new LinkedHashSet&lt;&gt;()</code></td><td>去重并保持插入顺序</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>操作</th><th>写法</th><th>返回值</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>添加</td><td><code>add(x)</code></td><td><code>boolean</code></td><td>新元素返回 true；重复元素返回 false</td></tr>
+            <tr><td>删除</td><td><code>remove(x)</code></td><td><code>boolean</code></td><td>删除成功返回 true；不存在返回 false</td></tr>
+            <tr><td>判断包含</td><td><code>contains(x)</code></td><td><code>boolean</code></td><td>包含返回 true，否则返回 false</td></tr>
+            <tr><td>元素个数</td><td><code>size()</code></td><td><code>int</code></td><td>返回集合大小</td></tr>
+            <tr><td>判空</td><td><code>isEmpty()</code></td><td><code>boolean</code></td><td>为空返回 true，否则返回 false</td></tr>
           </tbody>
         </table>
       </div>
@@ -490,19 +539,30 @@ set.remove(1);</code></pre>
       <div class="section-head"><h2>7. TreeSet</h2><span class="tag">自动排序，包含 Set 基础操作</span></div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>操作</th><th>写法</th><th>说明</th></tr></thead>
+          <thead><tr><th>构造方式</th><th>写法</th><th>说明</th></tr></thead>
           <tbody>
-            <tr><td>添加</td><td><code>add(x)</code></td><td>添加元素并自动维护顺序</td></tr>
-            <tr><td>删除</td><td><code>remove(x)</code></td><td>删除指定元素</td></tr>
-            <tr><td>判断包含</td><td><code>contains(x)</code></td><td>判断集合中是否存在元素</td></tr>
-            <tr><td>元素个数</td><td><code>size()</code></td><td>返回集合大小</td></tr>
-            <tr><td>判空</td><td><code>isEmpty()</code></td><td>判断集合是否为空</td></tr>
-            <tr><td>最小值</td><td><code>first()</code></td><td>获取最小元素</td></tr>
-            <tr><td>最大值</td><td><code>last()</code></td><td>获取最大元素</td></tr>
-            <tr><td>小于</td><td><code>lower(x)</code></td><td>获取严格小于 x 的最大元素</td></tr>
-            <tr><td>小于等于</td><td><code>floor(x)</code></td><td>获取小于等于 x 的最大元素</td></tr>
-            <tr><td>大于</td><td><code>higher(x)</code></td><td>获取严格大于 x 的最小元素</td></tr>
-            <tr><td>大于等于</td><td><code>ceiling(x)</code></td><td>获取大于等于 x 的最小元素</td></tr>
+            <tr><td>默认升序</td><td><code>new TreeSet&lt;&gt;()</code></td><td>按自然顺序排序</td></tr>
+            <tr><td>自定义排序</td><td><code>new TreeSet&lt;&gt;(comparator)</code></td><td>按比较器排序</td></tr>
+            <tr><td>由集合创建</td><td><code>new TreeSet&lt;&gt;(collection)</code></td><td>加入元素并自动排序</td></tr>
+            <tr><td>由 SortedSet 创建</td><td><code>new TreeSet&lt;&gt;(sortedSet)</code></td><td>复制已有有序集合</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>操作</th><th>写法</th><th>返回值</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>添加</td><td><code>add(x)</code></td><td><code>boolean</code></td><td>新元素返回 true；重复元素返回 false</td></tr>
+            <tr><td>删除</td><td><code>remove(x)</code></td><td><code>boolean</code></td><td>删除成功返回 true；不存在返回 false</td></tr>
+            <tr><td>判断包含</td><td><code>contains(x)</code></td><td><code>boolean</code></td><td>包含返回 true，否则返回 false</td></tr>
+            <tr><td>元素个数</td><td><code>size()</code></td><td><code>int</code></td><td>返回集合大小</td></tr>
+            <tr><td>判空</td><td><code>isEmpty()</code></td><td><code>boolean</code></td><td>为空返回 true，否则返回 false</td></tr>
+            <tr><td>最小值</td><td><code>first()</code></td><td><code>E</code></td><td>获取最小元素；为空时抛异常</td></tr>
+            <tr><td>最大值</td><td><code>last()</code></td><td><code>E</code></td><td>获取最大元素；为空时抛异常</td></tr>
+            <tr><td>小于</td><td><code>lower(x)</code></td><td><code>E</code></td><td>获取严格小于 x 的最大元素；不存在时返回 null</td></tr>
+            <tr><td>小于等于</td><td><code>floor(x)</code></td><td><code>E</code></td><td>获取小于等于 x 的最大元素；不存在时返回 null</td></tr>
+            <tr><td>大于</td><td><code>higher(x)</code></td><td><code>E</code></td><td>获取严格大于 x 的最小元素；不存在时返回 null</td></tr>
+            <tr><td>大于等于</td><td><code>ceiling(x)</code></td><td><code>E</code></td><td>获取大于等于 x 的最小元素；不存在时返回 null</td></tr>
           </tbody>
         </table>
       </div>
@@ -516,6 +576,19 @@ treeSet.last();    // 3</code></pre>
 
     <section id="map" class="section searchable tab-panel hidden" data-panel="map">
       <div class="section-head"><h2>8. Map</h2><span class="tag">键值对、统计、映射</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>构造方式</th><th>写法</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>空 HashMap</td><td><code>new HashMap&lt;&gt;()</code></td><td>无序，平均 O(1)</td></tr>
+            <tr><td>指定初始容量</td><td><code>new HashMap&lt;&gt;(capacity)</code></td><td>指定底层哈希表初始容量</td></tr>
+            <tr><td>由 Map 创建</td><td><code>new HashMap&lt;&gt;(map)</code></td><td>复制已有键值对</td></tr>
+            <tr><td>保持插入顺序</td><td><code>new LinkedHashMap&lt;&gt;()</code></td><td>按插入顺序遍历</td></tr>
+            <tr><td>按 key 排序</td><td><code>new TreeMap&lt;&gt;()</code></td><td>按 key 的自然顺序排序</td></tr>
+            <tr><td>自定义 key 排序</td><td><code>new TreeMap&lt;&gt;(comparator)</code></td><td>按比较器对 key 排序</td></tr>
+          </tbody>
+        </table>
+      </div>
       <div class="table-wrap">
         <table>
           <thead><tr><th>操作</th><th>写法</th><th>说明</th></tr></thead>
@@ -565,6 +638,18 @@ for (Map.Entry&lt;String, Integer&gt; entry : map.entrySet()) {
 
     <section id="heap" class="section searchable tab-panel hidden" data-panel="heap">
       <div class="section-head"><h2>9. PriorityQueue</h2><span class="tag">优先队列 / 堆</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>构造方式</th><th>写法</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>默认小根堆</td><td><code>new PriorityQueue&lt;&gt;()</code></td><td>堆顶是最小值</td></tr>
+            <tr><td>指定初始容量</td><td><code>new PriorityQueue&lt;&gt;(capacity)</code></td><td>指定初始容量</td></tr>
+            <tr><td>大根堆</td><td><code>new PriorityQueue&lt;&gt;(Collections.reverseOrder())</code></td><td>堆顶是最大值</td></tr>
+            <tr><td>自定义排序</td><td><code>new PriorityQueue&lt;&gt;(comparator)</code></td><td>按比较器决定优先级</td></tr>
+            <tr><td>由集合创建</td><td><code>new PriorityQueue&lt;&gt;(collection)</code></td><td>将集合元素加入优先队列</td></tr>
+          </tbody>
+        </table>
+      </div>
       <div class="table-wrap">
         <table>
           <thead><tr><th>操作</th><th>写法</th><th>复杂度</th></tr></thead>
